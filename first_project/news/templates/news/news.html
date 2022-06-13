@@ -1,0 +1,16 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+<p>Страница новостей</p>
+<ul>
+{% for p in posts %}
+    <li>
+        <h2>{{p.title}}</h2>
+        <p>{{p.content}}</p>
+        <p>{{p.category}}</p>
+        <P>{{p.time_created|date:""}}</P>
+    </li>
+    <hr>
+{% endfor %}
+</ul>
+{% endblock %}
