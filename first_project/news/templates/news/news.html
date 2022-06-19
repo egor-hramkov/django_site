@@ -1,13 +1,25 @@
 {% extends 'news/base.html' %}
 
 {% block content %}
-<p>Страница новостей</p>
+
+<p>Смотреть новости по категориям:</p>
+
+<div class="divcat">
+<ul class="cati">
+{% for c in cats %}
+     <li>
+         <a href="{{ c.get_absolute_url }}">{{c.name}}</a>
+     </li>
+{% endfor %}
+</ul>
+</div>
+<p>Все новости:</p>
 <ul>
 {% for p in posts %}
     <li>
-        <h2>{{p.title}}</h2>
+        <h2><a href="{{ p.get_absolute_url }}">{{p.title}}</a></h2>
         <p>{{p.content}}</p>
-        <p>{{p.category}}</p>
+
         <P>{{p.time_created|date:""}}</P>
     </li>
     <hr>
