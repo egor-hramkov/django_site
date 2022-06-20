@@ -1,0 +1,16 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+    <h1>Добавление новости</h1>
+
+<form action="{% url 'addNews' %}" method="post">
+    {% csrf_token %}
+    <div>{{ form.non_field_errors }}</div>
+    {% for f in form %}
+        <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+        <div>{{ f.errors }}</div>
+    {% endfor %}
+
+<button type="submit" class="button5">Опубликовать</button>
+</form>
+{% endblock %}

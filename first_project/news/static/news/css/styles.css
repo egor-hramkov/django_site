@@ -45,3 +45,31 @@ a {
     background-position: 50px 0;
   }
 }
+
+.addContent {
+  width:30%;
+  border: 1px solid #888;
+  font-size: 17px;
+  resize: vertical;
+  padding:15px;
+  border-radius:15px;
+  box-shadow:4px 4px 10px rgba(0,0,0,0.06);
+  height:150px;
+}
+
+.formfield * {
+  vertical-align: middle;
+}
+
+.button5 {
+  color: black;
+  border: 2px solid #555555;
+  background-color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
