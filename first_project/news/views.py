@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import *
 
@@ -8,7 +8,7 @@ menu = [{'title': 'На главную', 'url_name': 'home'}, {'title': 'Нов�
 def home(request):
     return render(request, 'news/index.html', {'title': 'Главная страница', 'menu': menu})
 
-def index(request):
+def news(request):
     posts = News.objects.all()
     cats = Category.objects.all()
     context = {
@@ -20,9 +20,8 @@ def index(request):
     return render(request, 'news/news.html',context=context)
 
 def newsById(request, news_id):
-    if news_id < 1:
-        raise Http404()
     n = News.objects.filter(id = news_id)
+    get_object_or_404(n)
     context = {
         'title': str(news_id) + ' Новость',
         'menu': menu,
@@ -31,13 +30,12 @@ def newsById(request, news_id):
 
     return render(request, 'news/newsById.html', context=context)
 
-def newsByCat(request, cat_id):
-    if cat_id < 1:
-        raise Http404()
-    c = News.objects.filter(cat_id = cat_id).all()
+def newsByCat(request, cat_slug):
+    id_caty = Category.objects.get(slug=cat_slug).id
+    c = News.objects.filter(cat_id=id_caty).all()
 
     context = {
-        'title': 'Новости по категории ' + Category.objects.get(id=cat_id).name,
+        'title': 'Новости по категории ' + Category.objects.get(id=id_caty).name,
         'menu': menu,
         "news": c
     }

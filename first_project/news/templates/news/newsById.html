@@ -7,6 +7,7 @@
 {% for n in news %}
     <p>{{n.title}}</p>
     <p>{{n.content}}</p>
+    <p>Категория: {{n.category}}</p>
     <p>{{n.time_created}}</p>
     <hr></hr>
 {% endfor %}
