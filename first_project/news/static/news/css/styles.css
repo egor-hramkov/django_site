@@ -73,3 +73,7 @@ a {
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.errorlist{
+    color:red;
+}

@@ -4,10 +4,12 @@
 {% if not news %}
     <h2>Для данной категории пока нет новостей</h2>
 {% endif %}
-    <p>{{news.title}}</p>
-    <p>{{news.content}}</p>
-    <p>Категория: {{news.cat}}</p>
-    <p>{{news.time_created}}</p>
+{% for n in news %}
+    <p>{{n.title}}</p>
+    <p>{{n.content}}</p>
+    <p>Категория: {{n.cat}}</p>
+    <p>{{n.time_created}}</p>
     <hr></hr>
+{% endfor %}
     <a href="{% url 'news' %}" class="animated-button">Вернуться</a>
 {% endblock %}

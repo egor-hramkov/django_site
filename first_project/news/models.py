@@ -5,10 +5,10 @@ from django.urls import reverse
 
 class News(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
-    content = models.TextField(blank=False)
+    content = models.TextField(blank=False, verbose_name='Текст новости')
     category = models.CharField(max_length=100)
     time_created = models.DateTimeField(auto_now_add=True)
-    cat = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
+    cat = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, verbose_name='Категория')
 
     def __str__(self):
         return self.title

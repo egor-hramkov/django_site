@@ -5,7 +5,7 @@
 
 <form action="{% url 'addNews' %}" method="post">
     {% csrf_token %}
-    <div>{{ form.non_field_errors }}</div>
+    <div class="forErrors">{{ form.non_field_errors }}</div>
     {% for f in form %}
         <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
         <div>{{ f.errors }}</div>

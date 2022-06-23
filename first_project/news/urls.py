@@ -4,8 +4,8 @@ from .views import *
 
 urlpatterns = [
     path('', home, name='home'),
-    path('news/', news, name='news'),
-    path('news/<int:news_id>', newsById, name='newsById'),
-    path('news/addnews', addNews, name='addNews'),
-    path('cats/<slug:cat_slug>', newsByCat, name='category')
+    path('news/', AllNews.as_view(), name='news'),
+    path('news/<int:news_id>', newsById.as_view(), name='newsById'),
+    path('news/addnews', AddNews.as_view(), name='addNews'),
+    path('cats/<slug:cat_slug>', NewsByCat.as_view(), name='category')
 ]
