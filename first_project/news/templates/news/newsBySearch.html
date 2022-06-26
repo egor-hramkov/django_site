@@ -1,0 +1,27 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block content %}
+ <form action="{% url 'searchBy' %}" method="post" class="forSearch">
+        {% csrf_token %}
+        <div class="forErrors">{{ form.non_field_errors }}</div>
+        {% for f in form %}
+            <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }} </label>{{ f }}</p>
+            <div>{{ f.errors }}</div>
+        {% endfor %}
+
+
+        <input type="image" class="searchBtn" src="{% static 'news/img/search.png' %}" border="0" alt="Submit" />
+    </form>
+
+{% if not news %}
+    <h2>Увы, ничего не нашлось :(</h2>
+{% endif %}
+{% for n in news %}
+    <p><b>{{n.title}}</b></p>
+    <p>{{n.content}}</p>
+    <p>Категория: {{n.cat}}</p>
+    <p>{{n.time_created}}</p>
+    <hr>
+{% endfor %}
+    <a href="{% url 'news' %}" class="animated-button">Вернуться</a>
+{% endblock %}

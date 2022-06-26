@@ -20,6 +20,7 @@ class AllNews(ListView):
         context['title'] = 'Новости'
         context['menu'] = menu
         context['cats'] = Category.objects.all()
+        context['form'] = SearchNews()
         return context
 
 class NewsByCat(ListView):
@@ -63,6 +64,25 @@ def pageNotFound(request, exception):
         'menu': menu,
     }
     return HttpResponseNotFound(render(request, 'news/404.html', context=context))
+
+def searchNewsBy(request):
+    form = SearchNews()
+    if request.method == 'POST':
+        form = SearchNews(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data.get("searchBy")
+        else:
+            data=""
+        n = News.objects.filter(title__iregex=data).all()
+        context = {
+            'news': n,
+            'form': form,
+            'title': 'Новости',
+            'menu': menu
+        }
+        return render(request, 'news/newsBySearch.html', context=context)
+    else:
+        return redirect('home')
 
 # def news(request):
 #     posts = News.objects.all()

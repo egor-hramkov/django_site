@@ -5,7 +5,7 @@
     <h2>Для данной категории пока нет новостей</h2>
 {% endif %}
 {% for n in news %}
-    <p>{{n.title}}</p>
+    <p><b>{{n.title}}</b></p>
     <p>{{n.content}}</p>
     <p>Категория: {{n.cat}}</p>
     <p>{{n.time_created}}</p>

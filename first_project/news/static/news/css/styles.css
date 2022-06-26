@@ -77,3 +77,15 @@ a {
 .errorlist{
     color:red;
 }
+
+.forSearch {
+    display: flex;
+    align-items: center;
+}
+
+.searchBtn {
+    width: 15px;
+    height: 15px;
+    margin-left: 15px;
+}
+

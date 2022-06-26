@@ -20,3 +20,7 @@ class AddNewsForm(forms.ModelForm):
         if len(title) > 150:
             raise ValidationError("Длина заголовка превышает 150 символов")
         return title
+
+class SearchNews(forms.Form):
+    searchBy = forms.CharField(max_length=150, label="", help_text="",
+                               widget=forms.TextInput(attrs={'placeholder': 'Search'}))
