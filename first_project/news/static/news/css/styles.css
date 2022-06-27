@@ -89,3 +89,18 @@ a {
     margin-left: 15px;
 }
 
+.forPaginate{
+  list-style: none; /*убираем маркеры списка*/
+  margin: 0; /*убираем верхнее и нижнее поле, равное 1em*/
+  padding-left: 0; /*убираем левый отступ, равный 40px*/
+  display: flex;
+  font-size: 24px;
+}
+
+.paginate {
+    display: inline;
+}
+
+.forPaginate li {
+    margin-left: 20px;
+}
