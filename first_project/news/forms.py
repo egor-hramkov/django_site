@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -37,3 +37,6 @@ class RegisterUserForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': "Логин"}))
+    password = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': "Пароль"}))
