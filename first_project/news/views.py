@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import *
@@ -92,6 +93,21 @@ def searchNewsBy(request):
     }
     return render(request, 'news/newsBySearch.html', context=context)
 
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'news/register.html'
+    success_url = reverse_lazy('authorize')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mix_def = self.get_user_context(title="Регистрация")
+        return dict(list(context.items()) + list(mix_def.items()))
+
+
+
+
+def Authorize(request):
+    return HttpResponse("<h1>Страница авторизации</h1>")
 
 # def news(request):
 #     posts = News.objects.all()
