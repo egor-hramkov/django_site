@@ -120,3 +120,29 @@ a {
     margin-left: auto;
     margin-right: 0em;
 }
+
+.profileCard{
+    width: 97%;
+    display: flex;
+}
+.avatar{
+    height: 200px;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.profileCard p{
+    margin: 10px 10px 10px 10px;
+    font-size: 20px;
+}
+
+.profileCard .username {
+    font-size: 26px;
+}
+.profileCard .aboutUser {
+    width: 500px;
+}
+
+.userNews p{
+    font-size: 20px;
+}

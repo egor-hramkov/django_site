@@ -13,7 +13,7 @@
     <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
     {% endfor %}
     {% if request.user.is_authenticated %}
-        <li class="headLogin"><a href="#">{{ user.username }}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
+            <li class="headLogin"><a href="../../profile/{{ user.profile.id }}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
     {% else %}
         <li class="headLogin"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Вход</a></li>
     {% endif %}

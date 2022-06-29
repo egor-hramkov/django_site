@@ -1,0 +1,26 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="profileCard">
+        <img src="{{ profile.profile_pic.url }}" class="avatar" alt="avatar">
+        <div class="about">
+            <p class="username">{{ profile.user.username }}</p>
+            <p>Email: {{ profile.user.email }}</p>
+            <p class="aboutUser">Обо мне: {{ profile.about }}</p>
+        </div>
+    </div>
+
+<div class="userNews">
+    <p>Ваши новости:</p>
+    {% for n in news %}
+        <h2><a href="{{ n.get_absolute_url }}">{{n.title}}</a></h2>
+        <p>{{n.content}}</p>
+        <p>Категория: {{n.cat}}</p>
+        <P>{{n.time_created|date:""}}</P>
+    <hr>
+    {% endfor %}
+</div>
+
+{% endblock %}

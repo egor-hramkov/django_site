@@ -12,4 +12,5 @@ class DataMixin:
         cats = Category.objects.all()
         context['menu'] = menu
         context['cats'] = cats
+
         return context

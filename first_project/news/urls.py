@@ -8,8 +8,9 @@ urlpatterns = [
     path('news/<int:news_id>/', newsById.as_view(), name='newsById'),
     path('news/addnews/', AddNews.as_view(), name='addNews'),
     path('cats/<slug:cat_slug>/', NewsByCat.as_view(), name='category'),
-    path('news/searchBy/', searchNewsBy, name='searchBy'),
+    path('news/searchBy', searchNewsBy, name='searchBy'),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
-    path('logout/', logout_user, name='logout')
+    path('logout/', logout_user, name='logout'),
+    path('profile/<int:profile_id>/', ShowProfile.as_view(), name='profile')
 ]

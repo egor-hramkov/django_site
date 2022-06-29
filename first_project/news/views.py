@@ -108,9 +108,10 @@ class RegisterUser(DataMixin, CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        prof = Profile.objects.create(about="", user_id=user.id)
+        prof.save()
         login(self.request, user)
         return redirect('home')
-
 
 
 class LoginUser(DataMixin, LoginView):
@@ -128,6 +129,20 @@ class LoginUser(DataMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+class ShowProfile(DataMixin, DetailView):
+    model = Profile
+    template_name = 'news/profile.html'
+    pk_url_kwarg = 'profile_id'
+    context_object_name = 'profile'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        us_id = Profile.objects.get(id=self.kwargs['profile_id']).user_id
+        context['news'] = News.objects.filter(author_id=us_id)
+        mix_def = self.get_user_context(title="Профиль пользователя")
+        return dict(list(context.items()) + list(mix_def.items()))
+
 
 # def news(request):
 #     posts = News.objects.all()
