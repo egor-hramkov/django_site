@@ -12,6 +12,8 @@
         </div>
     </div>
 
+<button  class="editProfile" onclick="window.location.href = '{% url 'editProfile' %}';">Редактировать профиль</button>
+
 <div class="userNews">
     <p>Ваши новости:</p>
     {% for n in news %}

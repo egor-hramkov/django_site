@@ -1,3 +1,6 @@
+import os.path
+
+from PIL import Image
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -7,10 +10,13 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
+from first_project.settings import MEDIA_URL, BASE_DIR, MEDIA_ROOT
 from .forms import *
 from .models import *
 from .utils import DataMixin, menu
 
+import uuid
+import PIL
 
 def home(request):
     return render(request, 'news/index.html', {'title': 'Главная страница', 'menu': menu})
@@ -143,6 +149,32 @@ class ShowProfile(DataMixin, DetailView):
         mix_def = self.get_user_context(title="Профиль пользователя")
         return dict(list(context.items()) + list(mix_def.items()))
 
+def editProfile(request):
+    form = EditProfileForm
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            pu = Profile.objects.get(user_id=request.user.id)
+            pu.about = form.cleaned_data['about']
+            if form.cleaned_data['profile_pic'] is not None:
+                filename = str(uuid.uuid4())
+                file = request.FILES['profile_pic'].read()
+                path = os.path.join(MEDIA_ROOT,'photos/', filename + '.png')
+                with open(path, 'wb+') as destination:
+                    destination.write(file)
+                pu.profile_pic = 'photos/' + filename + '.png'
+            pu.save()
+    else:
+        about_user = request.user.profile.about
+        form = EditProfileForm(initial={'about': about_user})
+
+    context = {
+        'form': form,
+        'title': 'Изменить профиль',
+        'menu': menu
+    }
+    return render(request, 'news/editProfile.html', context=context)
 
 # def news(request):
 #     posts = News.objects.all()

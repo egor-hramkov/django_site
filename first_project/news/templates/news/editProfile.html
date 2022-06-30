@@ -1,0 +1,20 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="profileCard">
+        <form action="{% url 'editProfile' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="forErrors">{{ form.non_field_errors }}</div>
+            {% for f in form %}
+                <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }} </label>{{ f }}</p>
+                <div>{{ f.errors }}</div>
+            {% endfor %}
+
+        <button type="submit" class="button5">Подтвердить</button>
+        </form>
+    </div>
+<button class="button5" onclick="window.location.href = '../../profile/{{ user.profile.id }}';">Вернуться</button>
+
+{% endblock %}
