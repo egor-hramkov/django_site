@@ -5,6 +5,7 @@
     <h2>Для данной категории пока нет новостей</h2>
 {% endif %}
     <p><b>{{news.title}}</b></p>
+    <p><b>Автор: <a style="font-size: 21px;" href="{{ news.author.profile.get_absolute_url }}">{{ news.author.username }}</a></b>
     <p>{{news.content}}</p>
     <p>Категория: {{news.cat}}</p>
     <p>{{news.time_created}}</p>

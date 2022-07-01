@@ -12,10 +12,12 @@
         </div>
     </div>
 
-<button  class="editProfile" onclick="window.location.href = '{% url 'editProfile' %}';">Редактировать профиль</button>
+{% if profile.id == request.user.profile.id %}
+    <button  class="editProfile" onclick="window.location.href = '{% url 'editProfile' %}';">Редактировать профиль</button>
+{% endif %}
 
 <div class="userNews">
-    <p>Ваши новости:</p>
+    <p>Новости пользователя:</p>
     {% for n in news %}
         <h2><a href="{{ n.get_absolute_url }}">{{n.title}}</a></h2>
         <p>{{n.content}}</p>

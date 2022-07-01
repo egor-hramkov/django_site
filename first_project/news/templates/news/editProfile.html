@@ -11,10 +11,10 @@
                 <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }} </label>{{ f }}</p>
                 <div>{{ f.errors }}</div>
             {% endfor %}
-
         <button type="submit" class="button5">Подтвердить</button>
         </form>
     </div>
+<button class="button5" onclick="window.location.href = '../deleteimage/{{ user.profile.id }}';">Удалить фотографию</button>
 <button class="button5" onclick="window.location.href = '../../profile/{{ user.profile.id }}';">Вернуться</button>
 
 {% endblock %}

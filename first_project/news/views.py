@@ -3,9 +3,10 @@ import os.path
 from PIL import Image
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -58,13 +59,19 @@ class newsById(DataMixin, DetailView):
         mix_def = self.get_user_context(title=str(self.kwargs['news_id']) + ' Новость')
         return dict(list(context.items()) + list(mix_def.items()))
 
-class AddNews(DataMixin, CreateView):
+class AddNews(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddNewsForm
     template_name = 'news/addNews.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         mix_def = self.get_user_context(title="Добавление новости")
         return dict(list(context.items()) + list(mix_def.items()))
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.author = User.objects.get(id=self.request.user.id)
+        fields.save()
+        return super().form_valid(form)
 
 def pageNotFound(request, exception):
     context = {
@@ -119,6 +126,10 @@ class RegisterUser(DataMixin, CreateView):
         login(self.request, user)
         return redirect('home')
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home')
+        return super(RegisterUser, self).dispatch(request, *args, **kwargs)
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
@@ -136,7 +147,7 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
-class ShowProfile(DataMixin, DetailView):
+class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
     model = Profile
     template_name = 'news/profile.html'
     pk_url_kwarg = 'profile_id'
@@ -151,13 +162,19 @@ class ShowProfile(DataMixin, DetailView):
 
 def editProfile(request):
     form = EditProfileForm
-
+    if not request.user.is_authenticated:
+        raise Http404
     if request.method == 'POST':
         form = EditProfileForm(request.POST, request.FILES)
         if form.is_valid():
             pu = Profile.objects.get(user_id=request.user.id)
             pu.about = form.cleaned_data['about']
             if form.cleaned_data['profile_pic'] is not None:
+                filename = str(pu.profile_pic)
+                if filename != "photos/user.png":
+                    pathToImg = os.path.join(MEDIA_ROOT, filename)
+                    if os.path.isfile(pathToImg):
+                        os.remove(pathToImg)
                 filename = str(uuid.uuid4())
                 file = request.FILES['profile_pic'].read()
                 path = os.path.join(MEDIA_ROOT,'photos/', filename + '.png')
@@ -175,6 +192,18 @@ def editProfile(request):
         'menu': menu
     }
     return render(request, 'news/editProfile.html', context=context)
+
+def deleteImage(request, img_id):
+    prof = Profile.objects.get(id=img_id)
+    imgToDel = str(prof.profile_pic)
+    if imgToDel != "photos/user.png":
+        pathToImg = os.path.join(MEDIA_ROOT, imgToDel)
+        if os.path.isfile(pathToImg):
+            os.remove(pathToImg)
+
+    prof.profile_pic = "photos/user.png"
+    prof.save()
+    return HttpResponseRedirect(reverse('profile', args=[prof.id]))
 
 # def news(request):
 #     posts = News.objects.all()

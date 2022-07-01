@@ -31,7 +31,7 @@
 {% for p in posts %}
     <li>
         <h2><a href="{{ p.get_absolute_url }}">{{p.title}}</a></h2>
-        <p>Автор: <b>{{ p.author.username }}</b></p>
+        <p><b>Автор: <a style="font-size: 21px;" href="{{ p.author.profile.get_absolute_url }}">{{ p.author.username }}</a></b></p>
         <p>{{p.content}}</p>
         <p>Категория: {{p.cat}}</p>
         <P>{{p.time_created|date:""}}</P>

@@ -4,13 +4,18 @@
 {% if not news %}
     <h2>Для данной категории пока нет новостей</h2>
 {% endif %}
+<ul>
 {% for n in news %}
-    <p><b>{{n.title}}</b></p>
-    <p>{{n.content}}</p>
-    <p>Категория: {{n.cat}}</p>
-    <p>{{n.time_created}}</p>
-    <hr></hr>
+     <li>
+        <h2><a href="{{ ns.get_absolute_url }}">{{n.title}}</a></h2>
+        <p><b>Автор: <a style="font-size: 21px;" href="{{ n.author.profile.get_absolute_url }}">{{ n.author.username }}</a></b></p>
+        <p>{{n.content}}</p>
+        <p>Категория: {{n.cat}}</p>
+        <P>{{n.time_created|date:""}}</P>
+    </li>
+    <hr>
 {% endfor %}
+</ul>
 {% if page_obj.has_other_pages %}
 <nav class="paginate">
     <ul class="forPaginate">
