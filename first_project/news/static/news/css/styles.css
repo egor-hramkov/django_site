@@ -150,3 +150,20 @@ a {
 .editProfile{
     margin: 20px 0 0 5px;
 }
+
+.user-list{
+    font-size: 20px;
+    list-style-type: none;
+}
+
+.user-in-list{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.avatar_for_list{
+    height: 100px;
+    width: 100px;
+    margin-right: 10px;
+}

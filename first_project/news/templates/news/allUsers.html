@@ -1,21 +1,26 @@
 {% extends 'news/base.html' %}
+{% load static %}
 
 {% block content %}
-{% if not news %}
-    <h2>Для данной категории пока нет новостей</h2>
-{% endif %}
-<ul>
-{% for n in news %}
-     <li>
-        <h2><a href="{{ n.get_absolute_url }}">{{n.title}}</a></h2>
-        <p><b>Автор: <a style="font-size: 21px;" href="{{ n.author.profile.get_absolute_url }}">{{ n.author.username }}</a></b></p>
-        <p>{{n.content}}</p>
-        <p>Категория: {{n.cat}}</p>
-        <P>{{n.time_created|date:""}}</P>
-    </li>
+
+<p>Все пользователи:</p>
+<ul class="user-list">
+{% for u in users %}
+
+        <li>
+            <div class="user-in-list">
+                <img src="{{ u.profile.profile_pic.url }}" class="avatar_for_list" alt="avatar">
+                <div>
+                    <p style="font-size: 24px;"><a href="{{ u.profile.get_absolute_url }}"><b>{{ u.username }}</b></a></p>
+                    <p>{{ u.email }}</p>
+                </div>
+            </div>
+        </li>
+
     <hr>
 {% endfor %}
 </ul>
+
 {% if page_obj.has_other_pages %}
 <nav class="paginate">
     <ul class="forPaginate">
@@ -55,5 +60,5 @@
     </ul>
 </nav>
 {% endif %}
-    <a href="{% url 'news' %}" class="animated-button">Вернуться</a>
+
 {% endblock %}

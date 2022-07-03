@@ -14,5 +14,6 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('profile/<int:profile_id>/', ShowProfile.as_view(), name='profile'),
     path('profile/editProfile/', editProfile, name='editProfile'),
-    path('profile/deleteimage/<int:img_id>', deleteImage, name='deleteimage')
+    path('profile/deleteimage/<int:img_id>', deleteImage, name='deleteimage'),
+    path('users/', AllUsers.as_view(), name='allUsers')
 ]

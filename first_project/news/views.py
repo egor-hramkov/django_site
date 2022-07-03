@@ -34,6 +34,9 @@ class AllNews(DataMixin, ListView):
         mix_def = self.get_user_context(title='Новости')
         return dict(list(context.items()) + list(mix_def.items()))
 
+    def get_queryset(self):
+        return News.objects.select_related('cat', 'author', 'author__profile').all()
+
 class NewsByCat(DataMixin, ListView):
     model = News
     template_name = "news/newsByCat.html"
@@ -46,7 +49,7 @@ class NewsByCat(DataMixin, ListView):
         return dict(list(context.items()) + list(mix_def.items()))
 
     def get_queryset(self):
-        return News.objects.filter(cat__slug=self.kwargs['cat_slug']).all()
+        return News.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat', 'author', 'author__profile')
 
 class newsById(DataMixin, DetailView):
     model = News
@@ -160,6 +163,9 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
         mix_def = self.get_user_context(title="Профиль пользователя")
         return dict(list(context.items()) + list(mix_def.items()))
 
+    def get_queryset(self):
+        return Profile.objects.filter(id=self.kwargs['profile_id']).select_related('user')
+
 def editProfile(request):
     form = EditProfileForm
     if not request.user.is_authenticated:
@@ -204,6 +210,21 @@ def deleteImage(request, img_id):
     prof.profile_pic = "photos/user.png"
     prof.save()
     return HttpResponseRedirect(reverse('profile', args=[prof.id]))
+
+class AllUsers(DataMixin, ListView):
+    model = User
+    template_name = "news/allUsers.html"
+    context_object_name = 'users'
+    paginate_by = 3
+
+    def get_context_data(self, *,object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchNews()
+        mix_def = self.get_user_context(title='Список пользователей')
+        return dict(list(context.items()) + list(mix_def.items()))
+
+    def get_queryset(self):
+        return User.objects.select_related('profile').all()
 
 # def news(request):
 #     posts = News.objects.all()
