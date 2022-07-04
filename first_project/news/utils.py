@@ -4,7 +4,8 @@ menu = [
     {'title': 'На главную', 'url_name': 'home'},
     {'title': 'Новости', 'url_name': 'news'},
     {'title': 'Опубликовать новость', 'url_name': 'addNews'},
-    {'title': 'Список пользователей', 'url_name': 'allUsers'}
+    {'title': 'Список пользователей', 'url_name': 'allUsers'},
+    {'title': 'Обратная связь', 'url_name': 'contact'}
 ]
 
 class DataMixin:
