@@ -2,6 +2,7 @@ import os.path
 
 from PIL import Image
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
@@ -160,6 +161,12 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
         context = super().get_context_data(**kwargs)
         us_id = Profile.objects.get(id=self.kwargs['profile_id']).user_id
         context['news'] = News.objects.filter(author_id=us_id)
+
+        f1 = UserFollowing.objects.filter(following_user_id=self.request.user.id, user_id=us_id)
+        if f1:
+            context['is_flw'] = True
+        else:
+            context['is_flw'] = False
         mix_def = self.get_user_context(title="Профиль пользователя")
         return dict(list(context.items()) + list(mix_def.items()))
 
@@ -199,6 +206,7 @@ def editProfile(request):
     }
     return render(request, 'news/editProfile.html', context=context)
 
+@login_required
 def deleteImage(request, img_id):
     prof = Profile.objects.get(id=img_id)
     imgToDel = str(prof.profile_pic)
@@ -236,7 +244,18 @@ class ContactFormView(DataMixin, FormView):
         mix_def = self.get_user_context(title='Обратная связь')
         return dict(list(context.items()) + list(mix_def.items()))
 
-
+@login_required
+def following(request):
+    if request.GET.get('param') == 'follow':
+        UserFollowing.objects.create(following_user_id=request.user.id,
+                                     user_id=request.GET.get('usid'))
+    elif request.GET.get('param') == 'unfollow':
+        if UserFollowing.objects.filter(following_user_id=request.user.id, user_id=request.GET.get('usid')):
+            print("asfls")
+            UserFollowing.objects.filter(following_user_id=request.user.id,
+                                         user_id=request.GET.get('usid')).delete()
+    prof = Profile.objects.get(user_id=request.GET.get('usid'))
+    return HttpResponseRedirect(reverse('profile', args=[prof.id]))
 
 # def news(request):
 #     posts = News.objects.all()

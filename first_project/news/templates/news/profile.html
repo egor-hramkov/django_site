@@ -14,8 +14,13 @@
 
 {% if profile.id == request.user.profile.id %}
     <button  class="editProfile" onclick="window.location.href = '{% url 'editProfile' %}';">Редактировать профиль</button>
+{% else %}
+    {% if is_flw %}
+        <button class="unflw_btn" onclick="window.location.href = '../following/?param=unfollow&usid={{profile.user.id}}';">Отписаться</button>
+    {% else %}
+        <button class="flw_btn" onclick="window.location.href = '../following/?param=follow&usid={{profile.user.id}}';">Подписаться</button>
+    {% endif %}
 {% endif %}
-
 <div class="userNews">
     <p>Новости пользователя:</p>
     {% for n in news %}

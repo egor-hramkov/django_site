@@ -52,3 +52,7 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.pk})
+
+class UserFollowing(models.Model):
+    user = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE, null=True)
+    following_user = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE, null=True)

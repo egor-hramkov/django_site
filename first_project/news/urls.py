@@ -17,5 +17,6 @@ urlpatterns = [
     path('profile/editProfile/', editProfile, name='editProfile'),
     path('profile/deleteimage/<int:img_id>', deleteImage, name='deleteimage'),
     path('users/', AllUsers.as_view(), name='allUsers'),
-    path('contact/', ContactFormView.as_view(), name='contact')
+    path('contact/', ContactFormView.as_view(), name='contact'),
+    path('profile/following/', following, name='following')
 ]

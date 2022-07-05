@@ -167,3 +167,23 @@ a {
     width: 100px;
     margin-right: 10px;
 }
+
+.flw_btn{
+    width:100px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
+    background-color: #57faab;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.unflw_btn{
+    width:100px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
+    background-color: #f72f2f;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+}
