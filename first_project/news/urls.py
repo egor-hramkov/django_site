@@ -18,5 +18,7 @@ urlpatterns = [
     path('profile/deleteimage/<int:img_id>', deleteImage, name='deleteimage'),
     path('users/', AllUsers.as_view(), name='allUsers'),
     path('contact/', ContactFormView.as_view(), name='contact'),
-    path('profile/following/', following, name='following')
+    path('profile/following/', following, name='following'),
+    path('profile/subscriptions/', Subs.as_view(), name='subs'),
+    path('profile/followers/', Followers.as_view(), name='followers')
 ]

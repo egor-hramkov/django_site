@@ -1,0 +1,68 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if not followers %}
+    <h1>У вас ещё нет подписчиков!</h1>
+{% endif %}
+
+<ul class="user-list">
+{% for f in followers %}
+    <li>
+            <div class="user-in-list">
+                <img src="{{ f.following_user.profile.profile_pic.url }}" class="avatar_for_list" alt="avatar">
+                <div>
+                    <p style="font-size: 24px;"><a href="{{ f.following_user.profile.get_absolute_url }}"><b>{{ f.following_user.username }}</b></a></p>
+                    <p>{{ f.following_user.email }}</p>
+                </div>
+            </div>
+        </li>
+
+    <hr>
+{% endfor %}
+</ul>
+
+{% if page_obj.has_other_pages %}
+<nav class="paginate">
+    <ul class="forPaginate">
+        <li>
+            {% if page_obj.number == 1 %}
+            <a href="?page=1" style="color: red;">1</a>
+            {% else %}
+            <a href="?page=1">1</a>
+            {% endif %}
+        </li>
+
+        {% for p in paginator.page_range %}
+            {% if p != 1 and p != page_obj.paginator.num_pages %}
+                {% if p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <li>
+                        {% if page_obj.number == p %}
+                            <a href="?page={{ p }}" style="color: red;">{{ p }}</a>
+                        {% else %}
+                            <a href="?page={{ p }}">{{ p }}</a>
+                        {% endif %}
+                    </li>
+                 {% elif p == 2 or p == paginator.num_pages|add:-1 %}
+                    <li>
+                       <a href="#" style="color: black;">...</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <li>
+            {% if page_obj.number == page_obj.paginator.num_pages %}
+            <a href="?page={{ page_obj.paginator.num_pages }}" style="color: red;">{{ page_obj.paginator.num_pages }}</a>
+            {% else %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+<a href="{% url 'profile' profile_id=profile_usid.id %}" class="animated-button">Вернуться</a>
+
+{% endblock %}

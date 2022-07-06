@@ -187,3 +187,8 @@ a {
     cursor: pointer;
     color: black;
 }
+
+.subs {
+    font-size: 22px;
+    margin-left: 10px;
+}

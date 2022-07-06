@@ -157,6 +157,7 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
     pk_url_kwarg = 'profile_id'
     context_object_name = 'profile'
 
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         us_id = Profile.objects.get(id=self.kwargs['profile_id']).user_id
@@ -167,7 +168,7 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
             context['is_flw'] = True
         else:
             context['is_flw'] = False
-        mix_def = self.get_user_context(title="Профиль пользователя")
+        mix_def = self.get_user_context(title="Профиль пользователя " + User.objects.select_related('profile').get(id=us_id).username)
         return dict(list(context.items()) + list(mix_def.items()))
 
     def get_queryset(self):
@@ -227,7 +228,6 @@ class AllUsers(DataMixin, ListView):
 
     def get_context_data(self, *,object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = SearchNews()
         mix_def = self.get_user_context(title='Список пользователей')
         return dict(list(context.items()) + list(mix_def.items()))
 
@@ -256,6 +256,43 @@ def following(request):
                                          user_id=request.GET.get('usid')).delete()
     prof = Profile.objects.get(user_id=request.GET.get('usid'))
     return HttpResponseRedirect(reverse('profile', args=[prof.id]))
+
+class Subs(LoginRequiredMixin, DataMixin, ListView):
+    model = UserFollowing
+    template_name = 'news/subs.html'
+    context_object_name = 'subs'
+    paginate_by = 5
+
+
+    def get_context_data(self, *,object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_usid'] = Profile.objects.select_related('user').get(user_id=self.request.GET.get('usid'))
+        mix_def = self.get_user_context(title='Подписки ' + User.objects.select_related('profile')
+                                        .get(id=self.request.GET.get('usid'))
+                                        .username)
+        return dict(list(context.items()) + list(mix_def.items()))
+
+    def get_queryset(self):
+        return UserFollowing.objects.filter(following_user_id=self.request.GET.get('usid')).select_related('following_user', 'user', 'user__profile')
+
+
+
+class Followers(LoginRequiredMixin, DataMixin, ListView):
+    model = UserFollowing
+    template_name = 'news/follower.html'
+    context_object_name = 'followers'
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_usid'] = Profile.objects.select_related('user').get(user_id=self.request.GET.get('usid'))
+        mix_def = self.get_user_context(title='Подписчики пользователя ' + User.objects.select_related('profile')
+                                        .get(id=self.request.GET.get('usid'))
+                                        .username)
+        return dict(list(context.items()) + list(mix_def.items()))
+
+    def get_queryset(self):
+        return UserFollowing.objects.filter(user_id=self.request.GET.get('usid')).select_related('following_user', 'following_user__profile')
 
 # def news(request):
 #     posts = News.objects.all()

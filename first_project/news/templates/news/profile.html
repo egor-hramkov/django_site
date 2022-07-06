@@ -21,6 +21,9 @@
         <button class="flw_btn" onclick="window.location.href = '../following/?param=follow&usid={{profile.user.id}}';">Подписаться</button>
     {% endif %}
 {% endif %}
+<a href="../subscriptions/?usid={{profile.user.id}}" class="subs">Подписки</a>
+<a href="../followers/?usid={{profile.user.id}}" class="subs">Подписчики</a>
+
 <div class="userNews">
     <p>Новости пользователя:</p>
     {% for n in news %}

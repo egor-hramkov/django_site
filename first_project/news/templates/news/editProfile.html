@@ -14,7 +14,7 @@
         <button type="submit" class="button5">Подтвердить</button>
         </form>
     </div>
-<button class="button5" onclick="window.location.href = '../deleteimage/{{ user.profile.id }}';">Удалить фотографию</button>
-<button class="button5" onclick="window.location.href = '../../profile/{{ user.profile.id }}';">Вернуться</button>
+<button class="button5" onclick="window.location.href = '{% url 'deleteimage' img_id=user.profile.id %}';">Удалить фотографию</button>
+<button class="button5" onclick="window.location.href = '{% url 'profile' profile_id=user.profile.id %}';">Вернуться</button>
 
 {% endblock %}
