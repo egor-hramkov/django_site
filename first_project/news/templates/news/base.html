@@ -1,5 +1,4 @@
 {% load static %}
-{% load cache %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
 </head>
 
 <body>
-{% cache 60 mainmenu %}
+
 {% block mainmenu %}
 <ul class="head">
     {% for m in menu %}
@@ -22,7 +21,6 @@
     {% endif %}
 </ul>
 {% endblock mainmenu %}
-{% endcache %}
 
 {% block content %}
 {% endblock %}

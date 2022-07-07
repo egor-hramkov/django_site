@@ -145,3 +145,4 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'first_project_cache'),
     }
 }
+
