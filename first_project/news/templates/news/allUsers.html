@@ -3,10 +3,21 @@
 
 {% block content %}
 
+<form action="searchBy" method="post" class="forSearch">
+        {% csrf_token %}
+        <div class="forErrors">{{ form.non_field_errors }}</div>
+        {% for f in form %}
+            <p class="formfield"><label for="{{ f.id_for_label }}">{{ f.label }} </label>{{ f }}</p>
+            <div>{{ f.errors }}</div>
+        {% endfor %}
+
+
+        <input type="image" class="searchBtn" src="{% static 'news/img/search.png' %}" border="0" alt="Submit" />
+    </form>
+
 <p>Все пользователи:</p>
 <ul class="user-list">
 {% for u in users %}
-
         <li>
             <div class="user-in-list">
                 <img src="{{ u.profile.profile_pic.url }}" class="avatar_for_list" alt="avatar">

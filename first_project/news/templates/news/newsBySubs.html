@@ -1,28 +1,21 @@
 {% extends 'news/base.html' %}
-{% load static %}
 
 {% block content %}
-
-{% if not subs %}
-    <h1>Список подписок пока пуст!</h1>
+{% if not news %}
+    <h2>Пока что список пуст! Либо вы ни на кого не подписаны, либо у ваших подписок еще нет записей!</h2>
 {% endif %}
-
-<ul class="user-list">
-{% for s in subs %}
-    <li>
-            <div class="user-in-list">
-                <img src="{{ s.user.profile.profile_pic.url }}" class="avatar_for_list" alt="avatar">
-                <div>
-                    <p style="font-size: 24px;"><a href="{{ s.user.profile.get_absolute_url }}"><b>{{ s.user.username }}</b></a></p>
-                    <p>{{ s.user.email }}</p>
-                </div>
-            </div>
-        </li>
-
+<ul>
+{% for n in news %}
+     <li>
+        <h2><a href="{{ n.get_absolute_url }}">{{n.title}}</a></h2>
+        <p><b>Автор: <a style="font-size: 21px;" href="{{ n.author.profile.get_absolute_url }}">{{ n.author.username }}</a></b></p>
+        <p>{{n.content}}</p>
+        <p>Категория: {{n.cat}}</p>
+        <P>{{n.time_created|date:""}}</P>
+    </li>
     <hr>
 {% endfor %}
 </ul>
-
 {% if page_obj.has_other_pages %}
 <nav class="paginate">
     <ul class="forPaginate">
@@ -62,7 +55,5 @@
     </ul>
 </nav>
 {% endif %}
-
-<a href="{% url 'profile' profile_id=profile_usid.id %}" class="animated-button">Вернуться</a>
-
+    <a href="{% url 'news' %}" class="animated-button">Вернуться</a>
 {% endblock %}

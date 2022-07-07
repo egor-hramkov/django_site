@@ -16,13 +16,13 @@
     <button  class="editProfile" onclick="window.location.href = '{% url 'editProfile' %}';">Редактировать профиль</button>
 {% else %}
     {% if is_flw %}
-        <button class="unflw_btn" onclick="window.location.href = '../following/?param=unfollow&usid={{profile.user.id}}';">Отписаться</button>
+        <button class="unflw_btn" onclick="window.location.href = '{% url 'following' %}?param=unfollow&usid={{profile.user.id}}';">Отписаться</button>
     {% else %}
-        <button class="flw_btn" onclick="window.location.href = '../following/?param=follow&usid={{profile.user.id}}';">Подписаться</button>
+        <button class="flw_btn" onclick="window.location.href = '{% url 'following' %}?param=follow&usid={{profile.user.id}}';">Подписаться</button>
     {% endif %}
 {% endif %}
-<a href="../subscriptions/?usid={{profile.user.id}}" class="subs">Подписки</a>
-<a href="../followers/?usid={{profile.user.id}}" class="subs">Подписчики</a>
+<a href="{% url 'subs' %}?usid={{profile.user.id}}" class="subs">Подписки</a>
+<a href="{% url 'followers' %}?usid={{profile.user.id}}" class="subs">Подписчики</a>
 
 <div class="userNews">
     <p>Новости пользователя:</p>

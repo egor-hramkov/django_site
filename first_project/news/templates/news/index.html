@@ -1,5 +1,13 @@
 {% extends 'news/base.html' %}
-
+{% load static %}
 {% block content %}
-    <p>Главная страница</p>
+     <div class="GridWrapper">
+        <div class="text-wrap">
+            <h2 class="x-small">The Latest —</h2>
+            <p>This project is made on django</p>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <img src="{% static 'news/img/python.png' %}"/>
+    </div>
 {% endblock %}

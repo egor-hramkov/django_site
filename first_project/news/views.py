@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, FormView
 
 from first_project.settings import MEDIA_URL, BASE_DIR, MEDIA_ROOT
@@ -18,8 +19,9 @@ from .models import *
 from .utils import DataMixin, menu
 
 import uuid
-import PIL
+from itertools import chain
 
+@cache_page(60 * 2)
 def home(request):
     return render(request, 'news/index.html', {'title': 'Главная страница', 'menu': menu})
 
@@ -84,6 +86,7 @@ def pageNotFound(request, exception):
     }
     return HttpResponseNotFound(render(request, 'news/404.html', context=context))
 
+@cache_page(60)
 def searchNewsBy(request):
     form = SearchNews()
     if request.method == 'POST':
@@ -174,6 +177,7 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
     def get_queryset(self):
         return Profile.objects.filter(id=self.kwargs['profile_id']).select_related('user')
 
+@login_required
 def editProfile(request):
     form = EditProfileForm
     if not request.user.is_authenticated:
@@ -207,6 +211,7 @@ def editProfile(request):
     }
     return render(request, 'news/editProfile.html', context=context)
 
+@cache_page(60 * 2)
 @login_required
 def deleteImage(request, img_id):
     prof = Profile.objects.get(id=img_id)
@@ -226,8 +231,10 @@ class AllUsers(DataMixin, ListView):
     context_object_name = 'users'
     paginate_by = 3
 
+
     def get_context_data(self, *,object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = SearchNews
         mix_def = self.get_user_context(title='Список пользователей')
         return dict(list(context.items()) + list(mix_def.items()))
 
@@ -273,9 +280,9 @@ class Subs(LoginRequiredMixin, DataMixin, ListView):
         return dict(list(context.items()) + list(mix_def.items()))
 
     def get_queryset(self):
-        return UserFollowing.objects.filter(following_user_id=self.request.GET.get('usid')).select_related('following_user', 'user', 'user__profile')
-
-
+        return UserFollowing.objects\
+            .filter(following_user_id=self.request.GET.get('usid'))\
+            .select_related('following_user', 'user', 'user__profile')
 
 class Followers(LoginRequiredMixin, DataMixin, ListView):
     model = UserFollowing
@@ -292,7 +299,58 @@ class Followers(LoginRequiredMixin, DataMixin, ListView):
         return dict(list(context.items()) + list(mix_def.items()))
 
     def get_queryset(self):
-        return UserFollowing.objects.filter(user_id=self.request.GET.get('usid')).select_related('following_user', 'following_user__profile')
+        return UserFollowing.objects\
+            .filter(user_id=self.request.GET.get('usid'))\
+            .select_related('following_user', 'following_user__profile')
+
+class NewsSubs(LoginRequiredMixin, DataMixin, ListView):
+    model = UserFollowing
+    template_name = 'news/newsBySubs.html'
+    context_object_name = 'news'
+    paginate_by = 3
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mix_def = self.get_user_context(title='Новости по подпискам')
+        return dict(list(context.items()) + list(mix_def.items()))
+
+    def get_queryset(self):
+        uf_list = UserFollowing.objects.filter(following_user=self.request.user.id).select_related('user')
+        news_list = []
+        for uf in uf_list:
+            news_list = list(chain(news_list, News.objects.filter(author=uf.user).select_related('cat', 'author', 'author__profile')))
+        return sorted(news_list, key=lambda inst: inst.time_created)[::-1]
+
+@cache_page(60)
+@login_required
+def searchUserBy(request):
+    form = SearchNews()
+    if request.method == 'POST':
+        form = SearchNews(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data.get("searchBy")
+            request.session['search'] = data
+        else:
+            data=""
+        u = User.objects.filter(username__iregex=data).all().select_related('profile')
+    else:
+        if 'search' in request.session:
+            u = User.objects.filter(username__iregex=request.session['search']).all()
+
+    paginator = Paginator(u, 3)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'users': page_obj,
+        'form': form,
+        'title': 'Список пользователей',
+        'menu': menu
+    }
+    return render(request, 'news/allUsers.html', context=context)
 
 # def news(request):
 #     posts = News.objects.all()

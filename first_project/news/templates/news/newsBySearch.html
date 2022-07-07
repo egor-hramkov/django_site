@@ -17,7 +17,8 @@
     <h2>Увы, ничего не нашлось :(</h2>
 {% endif %}
 {% for n in page_obj %}
-    <p><b>{{n.title}}</b></p>
+    <h2><a href="{{ n.get_absolute_url }}">{{n.title}}</a></h2>
+    <p><b>Автор: <a style="font-size: 21px;" href="{{ n.author.profile.get_absolute_url }}">{{ n.author.username }}</a></b></p>
     <p>{{n.content}}</p>
     <p>Категория: {{n.cat}}</p>
     <p>{{n.time_created}}</p>

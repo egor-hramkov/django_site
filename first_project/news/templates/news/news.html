@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<p>Смотреть новости по категориям:</p>
+<h3>Смотреть новости по категориям:</h3>
 
 <div class="divcat">
 <ul class="cati">
@@ -14,6 +14,9 @@
 {% endfor %}
 </ul>
 </div>
+{% if request.user.is_authenticated  %}
+ <button  class="button5" onclick="window.location.href = '{% url 'newsSubs' %}';">Новости подписок</button>
+{% endif %}
     <form action="searchBy?page=1" method="post" class="forSearch">
         {% csrf_token %}
         <div class="forErrors">{{ form.non_field_errors }}</div>

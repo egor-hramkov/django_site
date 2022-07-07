@@ -1,12 +1,15 @@
 {% load static %}
+{% load cache %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link rel='stylesheet' type='text/css' href="{% static 'news/css/styles.css' %}" />
-   </head>
+</head>
+
 <body>
+{% cache 60 mainmenu %}
 {% block mainmenu %}
 <ul class="head">
     {% for m in menu %}
@@ -19,6 +22,7 @@
     {% endif %}
 </ul>
 {% endblock mainmenu %}
+{% endcache %}
 
 {% block content %}
 {% endblock %}
