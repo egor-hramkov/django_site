@@ -1,0 +1,233 @@
+.divcat {
+    background-color:#eeeeee;
+    display:inline;
+}
+.cati li{
+    display: inline;
+    font-size: 20px;
+    margin: 0px 10px 0px 0px;
+}
+
+a:active, /* активная/посещенная ссылка */
+a:hover,  /* при наведении */
+a {
+  text-decoration: none;
+  color: #24a19c;
+}
+
+.animated-button {
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px 20px;
+  padding: 15px 30px;
+  overflow: hidden;
+  border: 2px solid;
+  border-bottom-width: 4px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: rgba(30, 255, 188, 1);
+  background: rgba(255, 255, 255, 1);
+  transition: color .3s, background .5s;
+}
+.animated-button:hover {
+  animation: stripes .75s infinite linear;
+  background: linear-gradient(45deg, rgba(30, 255, 188, 1) 25%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 50%, rgba(30, 255, 188, 1) 50%, rgba(30, 255, 188, 1) 75%, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 1));
+  background-size: 10px 10px;
+  color: #FF50E5;
+}
+@keyframes stripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 0;
+  }
+}
+
+.addContent {
+  width:30%;
+  border: 1px solid #888;
+  font-size: 17px;
+  resize: vertical;
+  padding:15px;
+  border-radius:15px;
+  box-shadow:4px 4px 10px rgba(0,0,0,0.06);
+  height:150px;
+}
+
+.formfield * {
+  vertical-align: middle;
+}
+
+.button5 {
+  color: black;
+  border: 2px solid #555555;
+  background-color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.errorlist{
+    color:red;
+}
+
+.forSearch {
+    display: flex;
+    align-items: center;
+}
+
+.searchBtn {
+    width: 15px;
+    height: 15px;
+    margin-left: 15px;
+}
+
+.forPaginate{
+  list-style: none; /*убираем маркеры списка*/
+  margin: 0; /*убираем верхнее и нижнее поле, равное 1em*/
+  padding-left: 0; /*убираем левый отступ, равный 40px*/
+  display: flex;
+  font-size: 24px;
+}
+
+.paginate {
+    display: inline;
+}
+
+.forPaginate li {
+    margin-left: 20px;
+}
+
+.head {
+    width: 97%;
+    display: flex;
+    font-size: 20px;
+
+}
+.head li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.headLogin {
+    margin-left: auto;
+    margin-right: 0em;
+}
+
+.profileCard{
+    width: 97%;
+    display: flex;
+}
+.avatar{
+    height: 200px;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.profileCard p{
+    margin: 10px 10px 10px 10px;
+    font-size: 20px;
+}
+
+.profileCard .username {
+    font-size: 26px;
+}
+.profileCard .aboutUser {
+    width: 500px;
+}
+
+.userNews p{
+    font-size: 20px;
+}
+
+.editProfile{
+    margin: 20px 0 0 5px;
+}
+
+.user-list{
+    font-size: 20px;
+    list-style-type: none;
+}
+
+.user-in-list{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.avatar_for_list{
+    height: 100px;
+    width: 100px;
+    margin-right: 10px;
+}
+
+.flw_btn{
+    width:100px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
+    background-color: #57faab;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.unflw_btn{
+    width:100px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
+    background-color: #f72f2f;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.subs {
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+.GridWrapper {
+    max-width: 97%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    margin-top: 15px;
+}
+
+.text-wrap {
+    padding: 0;
+    margin-bottom: 50px;
+}
+.text-wrap p {
+    font-size: 64px;
+    text-decoration: none;
+    color: #10ac84;
+    transition: color 0.25s linear;
+    font-family: "Leitura-Roman2", serif;
+    font-weight: 500;
+    line-height: 1.41;
+    margin-top: 0;
+    margin-bottom: 0;
+    letter-spacing: 1px;
+}
+.text-wrap span {
+    color: #74b9ff;
+}
+
+h2.x-small {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 21px;
+    margin-bottom: 0.75em;
+    font-family: "Styrene A Web", sans-serif;
+    line-height: 1.33;
+    letter-spacing: 0.041em;
+    color: #00cc99;
+}

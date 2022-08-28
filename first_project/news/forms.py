@@ -43,14 +43,6 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': "Пароль"}))
 
 
-class EditProfileForm(forms.ModelForm):
-    about = forms.CharField(label="", widget=forms.Textarea(attrs={'placeholder': "О себе"}), required=False)
-    profile_pic = forms.ImageField(label="Загрузите ваш аватар: ", required=False)
-
-    class Meta:
-       model = Profile
-       fields = ['about', 'profile_pic']
-
 class ContactForm(forms.Form):
     name = forms.CharField(label='Имя', max_length=50)
     email = forms.EmailField(label='Email')

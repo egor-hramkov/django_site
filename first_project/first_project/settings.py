@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news.apps.NewsConfig',
+    'account.apps.AccountConfig',
     'captcha',
     'debug_toolbar'
 ]
