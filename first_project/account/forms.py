@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
 
+from account.models import Profile
 from news.models import *
 
 class EditProfileForm(forms.ModelForm):
