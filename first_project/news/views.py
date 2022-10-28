@@ -14,6 +14,7 @@ from django.urls import reverse_lazy
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, FormView
 
+from account.models import Profile
 from .forms import *
 from .models import *
 from .utils import DataMixin
