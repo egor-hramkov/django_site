@@ -27,6 +27,7 @@ class ShowProfile(LoginRequiredMixin, DataMixin, DetailView):
     template_name = 'account/profile.html'
     pk_url_kwarg = 'profile_id'
     context_object_name = 'profile'
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

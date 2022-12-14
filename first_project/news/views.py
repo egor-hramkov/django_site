@@ -25,8 +25,10 @@ import smtplib
 from email.mime.text import MIMEText
 import configparser
 
+
 def home(request):
     return render(request, 'news/index.html', {'title': 'Главная страница'})
+
 
 class AllNews(DataMixin, ListView):
     model = News
@@ -34,7 +36,7 @@ class AllNews(DataMixin, ListView):
     context_object_name = 'posts'
     paginate_by = 3
 
-    def get_context_data(self, *,object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = SearchNews()
         mix_def = self.get_user_context(title='Новости')
@@ -43,19 +45,21 @@ class AllNews(DataMixin, ListView):
     def get_queryset(self):
         return News.objects.select_related('cat', 'author', 'author__profile').all()
 
+
 class NewsByCat(DataMixin, ListView):
     model = News
     template_name = "news/newsByCat.html"
     context_object_name = 'news'
     paginate_by = 3
 
-    def get_context_data(self, *,object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         mix_def = self.get_user_context(title='Новости по категориям ' + str(self.kwargs['cat_slug']))
         return dict(list(context.items()) + list(mix_def.items()))
 
     def get_queryset(self):
         return News.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat', 'author', 'author__profile')
+
 
 class newsById(DataMixin, DetailView):
     model = News
@@ -68,9 +72,12 @@ class newsById(DataMixin, DetailView):
         mix_def = self.get_user_context(title=str(self.kwargs['news_id']) + ' Новость')
         return dict(list(context.items()) + list(mix_def.items()))
 
+
 class AddNews(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddNewsForm
     template_name = 'news/addNews.html'
+    login_url = reverse_lazy('login')
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         mix_def = self.get_user_context(title="Добавление новости")
@@ -82,11 +89,13 @@ class AddNews(LoginRequiredMixin, DataMixin, CreateView):
         fields.save()
         return super().form_valid(form)
 
+
 def pageNotFound(request, exception):
     context = {
         'title': 'Страница не найдена',
     }
     return HttpResponseNotFound(render(request, 'news/404.html', context=context))
+
 
 @cache_page(60)
 def searchNewsBy(request):
@@ -97,7 +106,7 @@ def searchNewsBy(request):
             data = form.cleaned_data.get("searchBy")
             request.session['search'] = data
         else:
-            data=""
+            data = ""
         n = News.objects.filter(title__iregex=data).all()
     else:
         if 'search' in request.session:
@@ -116,6 +125,7 @@ def searchNewsBy(request):
         'title': 'Новости',
     }
     return render(request, 'news/newsBySearch.html', context=context)
+
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
@@ -139,6 +149,7 @@ class RegisterUser(DataMixin, CreateView):
             return redirect('home')
         return super(RegisterUser, self).dispatch(request, *args, **kwargs)
 
+
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
     template_name = 'news/login.html'
@@ -151,6 +162,7 @@ class LoginUser(DataMixin, LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
 
+
 def logout_user(request):
     logout(request)
     return redirect('login')
@@ -162,7 +174,7 @@ class AllUsers(DataMixin, ListView):
     context_object_name = 'users'
     paginate_by = 3
 
-    def get_context_data(self, *,object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = SearchNews
         mix_def = self.get_user_context(title='Список пользователей')
@@ -171,12 +183,13 @@ class AllUsers(DataMixin, ListView):
     def get_queryset(self):
         return User.objects.select_related('profile').all()
 
+
 class ContactFormView(DataMixin, FormView):
     form_class = ContactForm
     template_name = 'news/contact.html'
     success_url = reverse_lazy('home')
 
-    def get_context_data(self, *,object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         mix_def = self.get_user_context(title='Обратная связь')
         return dict(list(context.items()) + list(mix_def.items()))
@@ -192,12 +205,13 @@ class ContactFormView(DataMixin, FormView):
 
         try:
             server.login(my_email, password)
-            msg=MIMEText(form.cleaned_data['content'])
+            msg = MIMEText(form.cleaned_data['content'])
             msg['Subject'] = 'От сайта на Django'
             server.sendmail(sender, my_email, msg.as_string())
         except Exception as e:
             print("Ошибка" + str(e))
         return super().form_valid(form)
+
 
 class NewsSubs(LoginRequiredMixin, DataMixin, ListView):
     model = UserFollowing
@@ -214,8 +228,10 @@ class NewsSubs(LoginRequiredMixin, DataMixin, ListView):
         uf_list = UserFollowing.objects.filter(following_user=self.request.user.id).select_related('user')
         news_list = []
         for uf in uf_list:
-            news_list = list(chain(news_list, News.objects.filter(author=uf.user).select_related('cat', 'author', 'author__profile')))
+            news_list = list(chain(news_list, News.objects.filter(author=uf.user).select_related('cat', 'author',
+                                                                                                 'author__profile')))
         return sorted(news_list, key=lambda inst: inst.time_created)[::-1]
+
 
 @cache_page(60)
 @login_required
@@ -227,7 +243,7 @@ def searchUserBy(request):
             data = form.cleaned_data.get("searchBy")
             request.session['search'] = data
         else:
-            data=""
+            data = ""
         u = User.objects.filter(username__iregex=data).all().select_related('profile')
     else:
         if 'search' in request.session:

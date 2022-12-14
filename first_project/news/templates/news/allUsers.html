@@ -63,9 +63,9 @@
 
         <li>
             {% if page_obj.number == page_obj.paginator.num_pages %}
-            <a href="?page={{ page_obj.paginator.num_pages }}" style="color: red;">{{ page_obj.paginator.num_pages }}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" style="color: red;">{{ page_obj.paginator.num_pages }}</a>
             {% else %}
-            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
             {% endif %}
         </li>
     </ul>
